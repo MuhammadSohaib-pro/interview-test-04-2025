@@ -6,6 +6,8 @@ import 'package:kmbal_movies_app/models/login_request.dart';
 import 'package:kmbal_movies_app/models/login_response.dart';
 import 'package:kmbal_movies_app/models/movie.dart';
 import 'package:kmbal_movies_app/models/movies_index_response.dart';
+import 'package:kmbal_movies_app/models/review_request.dart';
+import 'package:kmbal_movies_app/models/review_response.dart';
 import 'package:kmbal_movies_app/models/reviews_index_response.dart';
 import 'package:kmbal_movies_app/models/validation_error_response.dart';
 
@@ -89,6 +91,18 @@ class MovieReviewsApiClient extends _AbstractApiClient {
       ReviewsIndexResponse.fromJson,
       await get(
         _url("/v1/movies/$movieId/reviews"),
+        headers: _headersWithAuth(),
+      ),
+    );
+  }
+
+  Future<ApiResponse<ReviewResponse>> store(
+      String movieId, ReviewRequest request) async {
+    return _toApiResponse(
+      ReviewResponse.fromJson,
+      await post(
+        _url("/v1/movies/$movieId/reviews"),
+        request.toJson(),
         headers: _headersWithAuth(),
       ),
     );

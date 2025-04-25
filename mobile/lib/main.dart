@@ -6,6 +6,7 @@ import 'package:kmbal_movies_app/controllers/auth_controller.dart';
 import 'package:kmbal_movies_app/middleware/auth_middleware.dart';
 import 'package:kmbal_movies_app/pages/home.dart';
 import 'package:kmbal_movies_app/pages/login.dart';
+import 'package:kmbal_movies_app/pages/movies/add_review.dart';
 import 'package:kmbal_movies_app/pages/movies/index.dart';
 import 'package:kmbal_movies_app/pages/movies/show.dart';
 import 'package:kmbal_movies_app/services/api_client.dart';
@@ -62,6 +63,12 @@ class MainApp extends StatelessWidget {
           page: () => const ShowMoviePage(),
           middlewares: [AuthMiddleware()],
           bindings: [MoviesBindings()],
+        ),
+        GetPage(
+          name: '/movies/add-review',
+          page: () => AddReviewPage(
+            movieId: int.parse(Get.parameters['id']!),
+          ),
         ),
       ],
     );

@@ -13,4 +13,4 @@ services:
       APP_KEY: base64:/Jzq/ZZuEypmBprFrlhykEkxsaY6vxDbwJoUBgGSTdw=
       APP_URL: http://localhost:8000
     volumes:
-      - ./web/database:/app/database
+      - ./web/database:/app/database:rw

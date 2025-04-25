@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kmbal_movies_app/controllers/movies_controller.dart';
@@ -14,13 +16,24 @@ class ShowMoviePage extends StatefulWidget {
 
 class MoviesPageState extends State<ShowMoviePage> {
   final MoviesController _moviesController = Get.find();
-  late final Future<Movie> _movie = _moviesController.fetchMovie(
-    Get.parameters['id']!,
-  );
-  late final Future<List<Review>> _reviews =
-      _moviesController.fetchMovieReviews(
-    Get.parameters['id']!,
-  );
+  late String _movieId;
+
+  late Future<Movie> _movie;
+  late Future<List<Review>> _reviews;
+
+  @override
+  void initState() {
+    super.initState();
+    _movieId = Get.parameters['id']!;
+    _loadData();
+  }
+
+  void _loadData() {
+    setState(() {
+      _movie = _moviesController.fetchMovie(_movieId);
+      _reviews = _moviesController.fetchMovieReviews(_movieId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +77,21 @@ class MoviesPageState extends State<ShowMoviePage> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  Text(
-                    "Reviews",
-                    style: Theme.of(context).textTheme.headlineMedium,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Reviews",
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed('/movies/add-review',
+                              parameters: {'id': _movieId});
+                        },
+                        child: Text('Add Review'),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 8),
                   AnimatedSize(
